@@ -1,9 +1,15 @@
 import React from "react";
 import { Outlet } from "react-router";
 import authImg from "../assets/authImg.png";
+import HealthConnectLogo from "../components/HealthConnectLogo";
+import Navbar from "../components/Navbar";
 
 const AuthLayout = () => {
   return (
+    <>
+    <div >
+        <Navbar></Navbar>
+    </div>
     <div className="min-h-screen max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-center">
       {/* Left side - Login/Register Form */}
       <div className="w-full md:w-1/2 flex justify-center items-center p-6">
@@ -19,6 +25,7 @@ const AuthLayout = () => {
         />
       </div>
     </div>
+    </>
   );
 };
 
