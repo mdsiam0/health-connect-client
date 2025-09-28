@@ -21,3 +21,4 @@ If you are developing a production application, we recommend using TypeScript wi
 - npm install tailwindcss @tailwindcss/vite
 - npm i -D daisyui@latest
 - npm i react-router
+- npm install react-hook-form

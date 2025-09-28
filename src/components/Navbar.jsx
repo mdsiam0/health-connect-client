@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
-import logo from "../assets/logo.png";
+
+import HealthConnectLogo from "./HealthConnectLogo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,7 @@ const Navbar = () => {
         <NavLink to="/available-camps" className="hover:text-primary">Available Camps</NavLink>
       </li>
       <li>
-        <NavLink to="/join-us" className="hover:text-primary">Join Us</NavLink>
+        <NavLink to="/login" className="hover:text-primary">Join Us</NavLink>
       </li>
     </>
   );
@@ -24,10 +25,7 @@ const Navbar = () => {
       <div className="max-w-[1500px] mx-auto px-4">
         <div className="flex justify-between items-center py-3">
           {/* Logo + Website name */}
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="MCMS Logo" className="h-8 w-8" />
-            <span className="font-bold text-xl">HealthConnect</span>
-          </Link>
+          <HealthConnectLogo></HealthConnectLogo>
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex gap-6 items-center font-medium">{navLinks}</ul>
