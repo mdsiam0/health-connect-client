@@ -29,6 +29,10 @@ export const router = createBrowserRouter([
                 path: "/dashboard",
                 Component: OrganizerDashboardLayout,
                 children: [
+                    {
+                        index: true, 
+                        Component: OrganizerProfile, 
+                    },
                     { path: "profile", Component: OrganizerProfile },
                     { path: "add-camp", Component: AddCamp },
                     { path: "manage-camps", Component: ManageCamps },
