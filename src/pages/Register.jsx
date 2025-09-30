@@ -1,6 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import useAuth from "../hooks/useAuth";
+import SocialLogin from "../components/SocialLogin";
 
 const Register = () => {
   const {
@@ -9,10 +11,19 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
+  const { createUser } = useAuth();
+
   const onSubmit = (data) => {
     const imageFile = data.image[0];
     console.log("Registration Data:", data);
     console.log("Selected Image File:", imageFile);
+    createUser(data.email, data.password)
+      .then(result => {
+        console.log(result.user)
+      })
+      .catch(error => {
+        console.error(error);
+      })
   };
 
   return (
@@ -83,6 +94,7 @@ const Register = () => {
           Register
         </button>
       </form>
+      <SocialLogin></SocialLogin>
 
       {/* Login Link */}
       <p className="text-sm text-center mt-4">
@@ -91,6 +103,7 @@ const Register = () => {
           Login
         </Link>
       </p>
+      
     </div>
   );
 };

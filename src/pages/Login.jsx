@@ -1,5 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
+import SocialLogin from "../components/SocialLogin";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const {
@@ -8,8 +11,19 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
+  const { signIn } = useAuth();
+
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
-    console.log(data);
+    signIn(data.email, data.password)
+      .then((result) => {
+        console.log("Logged in:", result.user);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Login error:", error.message);
+      });
   };
 
   return (
@@ -53,12 +67,15 @@ const Login = () => {
         </button>
       </form>
 
+      {/* Social Login */}
+      <SocialLogin />
+
       {/* Register Link */}
       <p className="text-sm text-center mt-4">
         Don’t have an account?{" "}
-        <a href="/register" className="text-blue-600 hover:underline">
+        <Link to="/register" className="text-blue-600 hover:underline">
           Register
-        </a>
+        </Link>
       </p>
     </div>
   );
