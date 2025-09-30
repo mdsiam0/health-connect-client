@@ -9,7 +9,7 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data); // handle login here
+    console.log(data);
   };
 
   return (
