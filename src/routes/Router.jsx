@@ -4,31 +4,36 @@ import Home from "../pages/Home";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import AvailableCamps from "../components/AvailableCamps";
 
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    Component: RootLayout,
-    children: [
-        {
-            index: true,
-            Component: Home,
-        }
-    ]
-},
-{
-    path: '/',
-    Component: AuthLayout,
-    children: [
-        {
-            path: 'login',
-            Component: Login,
-        },
-        {
-            path: 'register',
-            Component: Register,
-        }
-    ]
-},
+    {
+        path: "/",
+        Component: RootLayout,
+        children: [
+            {
+                index: true,
+                Component: Home,
+            },
+            {
+                path: 'available-camps',
+                Component: AvailableCamps,
+            },
+        ]
+    },
+    {
+        path: '/',
+        Component: AuthLayout,
+        children: [
+            {
+                path: 'login',
+                Component: Login,
+            },
+            {
+                path: 'register',
+                Component: Register,
+            }
+        ]
+    },
 ]);
