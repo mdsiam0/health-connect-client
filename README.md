@@ -23,3 +23,8 @@ If you are developing a production application, we recommend using TypeScript wi
 - npm i react-router
 - npm install react-hook-form
 - npm install firebase
+- npm install react-icons
+- npm install react-responsive-carousel
+- npm install react-hot-toast
+- npm install @tanstack/react-query
+- npm install axios
