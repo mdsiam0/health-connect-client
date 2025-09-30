@@ -5,6 +5,11 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import AvailableCamps from "../components/AvailableCamps";
+import OrganizerDashboardLayout from "../pages/OrganizerDashboardLayout/OrganizerDashboardLayout";
+import OrganizerProfile from "../pages/OrganizerDashboardLayout/OrganizerProfile";
+import AddCamp from "../pages/OrganizerDashboardLayout/AddCamp";
+import ManageCamps from "../pages/OrganizerDashboardLayout/ManageCamps";
+import RegisteredCamps from "../pages/OrganizerDashboardLayout/RegisteredCamps";
 
 
 export const router = createBrowserRouter([
@@ -19,6 +24,16 @@ export const router = createBrowserRouter([
             {
                 path: 'available-camps',
                 Component: AvailableCamps,
+            },
+            {
+                path: "/dashboard",
+                Component: OrganizerDashboardLayout,
+                children: [
+                    { path: "profile", Component: OrganizerProfile },
+                    { path: "add-camp", Component: AddCamp },
+                    { path: "manage-camps", Component: ManageCamps },
+                    { path: "registered-camps", Component: RegisteredCamps },
+                ],
             },
         ]
     },
