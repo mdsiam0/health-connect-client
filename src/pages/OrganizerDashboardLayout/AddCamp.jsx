@@ -1,10 +1,9 @@
-// src/pages/OrganizerDashboardLayout/AddCamp.jsx
 import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
-import useAuth from "../../hooks/useAuth"; // adjust path if yours is elsewhere
+import useAuth from "../../hooks/useAuth";
 
 const AddCamp = () => {
   const { user } = useAuth();
@@ -13,7 +12,7 @@ const AddCamp = () => {
 
   const onSubmit = async (formData) => {
     try {
-      // Attach organizer info
+    
       const payload = {
         ...formData,
         fees: Number(formData.fees) || 0,
@@ -24,7 +23,7 @@ const AddCamp = () => {
       await axios.post(`${import.meta.env.VITE_API_URL}/camps`, payload);
       toast.success("Camp added successfully");
       reset();
-      // Optionally navigate to manage-camps
+      
       navigate("/dashboard/manage-camps");
     } catch (err) {
       console.error(err);
