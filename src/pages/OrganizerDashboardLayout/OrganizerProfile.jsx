@@ -1,3 +1,4 @@
+// src/pages/Organizer/OrganizerProfile.jsx
 import React from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -10,7 +11,7 @@ const OrganizerProfile = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
- 
+  // Fetch user profile from backend
   const { data: profile, isLoading } = useQuery({
     queryKey: ["profile", user?.email],
     queryFn: async () => {
@@ -22,6 +23,7 @@ const OrganizerProfile = () => {
     enabled: !!user?.email,
   });
 
+  // Handle profile update via SweetAlert2
   const handleUpdate = async () => {
     const { value: formValues } = await Swal.fire({
       title: "Update Profile",
@@ -29,19 +31,17 @@ const OrganizerProfile = () => {
         <input id="swal-name" class="swal2-input" placeholder="Name" value="${profile?.name || ""}" />
         <input id="swal-email" class="swal2-input" placeholder="Email" value="${profile?.email || ""}" disabled />
         <input id="swal-phone" class="swal2-input" placeholder="Phone" value="${profile?.phone || ""}" />
-        <input id="swal-pic" class="swal2-input" placeholder="Profile Image URL" value="${profile?.profilePic || ""}" />
+        <input id="swal-pic" class="swal2-input" placeholder="Profile Image URL" value="${profile?.image || ""}" />
       `,
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: "Save",
-      preConfirm: () => {
-        return {
-          name: document.getElementById("swal-name").value,
-          email: document.getElementById("swal-email").value,
-          phone: document.getElementById("swal-phone").value,
-          profilePic: document.getElementById("swal-pic").value,
-        };
-      },
+      preConfirm: () => ({
+        name: document.getElementById("swal-name").value,
+        email: document.getElementById("swal-email").value,
+        phone: document.getElementById("swal-phone").value,
+        image: document.getElementById("swal-pic").value,
+      }),
     });
 
     if (formValues) {
@@ -51,7 +51,7 @@ const OrganizerProfile = () => {
           formValues
         );
         toast.success("Profile updated successfully!");
-        queryClient.invalidateQueries(["profile", user?.email]); // 🔄 Refetch updated profile
+        queryClient.invalidateQueries(["profile", user?.email]); // Refetch updated profile
       } catch (err) {
         console.error(err);
         toast.error("Failed to update profile.");
@@ -59,12 +59,12 @@ const OrganizerProfile = () => {
     }
   };
 
-  if (isLoading) return <Loading></Loading>
+  if (isLoading) return <Loading />;
 
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded shadow text-center">
       <img
-        src={profile?.profilePic || "https://via.placeholder.com/150"}
+        src={profile?.image || "https://via.placeholder.com/150"}
         alt="Profile"
         className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
       />

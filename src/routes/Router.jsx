@@ -10,8 +10,9 @@ import OrganizerProfile from "../pages/OrganizerDashboardLayout/OrganizerProfile
 import AddCamp from "../pages/OrganizerDashboardLayout/AddCamp";
 import ManageCamps from "../pages/OrganizerDashboardLayout/ManageCamps";
 import RegisteredCamps from "../pages/OrganizerDashboardLayout/RegisteredCamps";
-import PrivateOrganizerRoute from "./PrivateOrganizerRoute";
-
+import Analytics from "../pages/OrganizerDashboardLayout/Analytics";
+import PaymentHistory from "../pages/OrganizerDashboardLayout/PaymentHistory";
+import ManageRegisteredCamps from "../pages/OrganizerDashboardLayout/ManageRegisteredCamps";
 
 export const router = createBrowserRouter([
   {
@@ -22,17 +23,17 @@ export const router = createBrowserRouter([
       { path: "available-camps", element: <AvailableCamps /> },
       {
         path: "/dashboard",
-        element: (
-          <PrivateOrganizerRoute>
-            <OrganizerDashboardLayout />
-          </PrivateOrganizerRoute>
-        ),
+        element: <OrganizerDashboardLayout />,
         children: [
           { index: true, element: <OrganizerProfile /> },
           { path: "profile", element: <OrganizerProfile /> },
+          { path: "analytics", element: <Analytics /> },
+          
           { path: "add-camp", element: <AddCamp /> },
           { path: "manage-camps", element: <ManageCamps /> },
           { path: "registered-camps", element: <RegisteredCamps /> },
+          { path: "manage-registered-camps", element: <ManageRegisteredCamps /> },
+          { path: "payment-history", element: <PaymentHistory /> },
         ],
       },
     ],

@@ -1,10 +1,9 @@
 import React, { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 
 const UserRoleContext = createContext(null);
-
 
 const fetchUserByEmail = async (email) => {
   const res = await fetch(`http://localhost:5000/users/${email}`);
@@ -12,24 +11,28 @@ const fetchUserByEmail = async (email) => {
   return res.json();
 };
 
-
 export const UserRoleProvider = ({ children }) => {
-  const { user: firebaseUser } = useAuth();
+  const { user: firebaseUser, loading: authLoading } = useAuth();
 
-  const { data: user, isLoading } = useQuery({
-    queryKey: ["user", firebaseUser?.email],
+  const { data: user, isLoading, isError } = useQuery({
+    queryKey: ["userRole", firebaseUser?.email],
     queryFn: () => fetchUserByEmail(firebaseUser.email),
-    enabled: !!firebaseUser,
+    enabled: !!firebaseUser, // fetch only if firebaseUser exists
     staleTime: 1000 * 60 * 5,
   });
 
   return (
-    <UserRoleContext.Provider value={{ role: user?.role, user, isLoading }}>
+    <UserRoleContext.Provider
+      value={{
+        role: user?.role || null,
+        user,
+        isLoading: authLoading || isLoading,
+        isError,
+      }}
+    >
       {children}
     </UserRoleContext.Provider>
   );
 };
 
-
 export const useUserRole = () => useContext(UserRoleContext);
-

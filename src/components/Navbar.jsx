@@ -107,16 +107,16 @@ const mobileProfileDropdown = (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-[1500px] mx-auto px-4">
         <div className="flex justify-between items-center py-3">
-          {/* Logo */}
+        
           <HealthConnectLogo />
 
-          {/* Desktop Menu */}
+          
           <ul className="hidden md:flex gap-6 items-center font-medium ml-auto">
             {navLinks}
             {user && desktopProfileDropdown}
           </ul>
 
-          {/* Mobile Menu Button */}
+          
           <div className="md:hidden ml-auto">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -127,12 +127,12 @@ const mobileProfileDropdown = (
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown */}
+        
         {isOpen && (
           <ul className="md:hidden flex flex-col gap-4 mt-3 pb-4 font-medium border-t pt-3">
             {user && (
               <li className="flex flex-col gap-2">
-                {/* Profile picture on the left */}
+                
                 <div
                   className="flex items-center gap-2 cursor-pointer"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
