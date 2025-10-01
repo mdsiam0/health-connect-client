@@ -1,19 +1,18 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router";
+import { Navigate } from "react-router";
 import { useUserRole } from "../contexts/UserRoleProvider";
 import Loading from "../components/Loading";
 
-const ParticipantRoute = () => {
+const ParticipantRoute = ({ children }) => {
   const { role, isLoading } = useUserRole();
 
-  if (isLoading) return <Loading />; 
+  if (isLoading) return <Loading />;
 
   if (role !== "participant") {
-   
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />; 
+  return children;
 };
 
 export default ParticipantRoute;
