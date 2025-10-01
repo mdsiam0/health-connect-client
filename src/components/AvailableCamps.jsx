@@ -57,6 +57,7 @@ const AvailableCamps = () => {
                 >
                   Details
                 </Link>
+
               </div>
             </div>
           ))}

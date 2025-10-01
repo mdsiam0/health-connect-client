@@ -52,12 +52,7 @@ const PopularCamps = () => {
                   Healthcare Professional: {camp.professional || "TBD"}
                 </p>
                 <p className="text-gray-600 mb-3">Participants: {camp.participants || 0}</p>
-                <Link
-                  to={`/camp-details/${camp._id}`}
-                  className="inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
-                >
-                  Details
-                </Link>
+                
               </div>
             </div>
           ))}
@@ -67,7 +62,7 @@ const PopularCamps = () => {
       <div className="text-center mt-8">
         <Link
           to="/available-camps"
-          className="text-blue-600 hover:underline font-medium"
+          className=" btn btn-primary"
         >
           See All Camps
         </Link>
