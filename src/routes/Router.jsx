@@ -13,6 +13,8 @@ import RegisteredCamps from "../pages/OrganizerDashboardLayout/RegisteredCamps";
 import Analytics from "../pages/OrganizerDashboardLayout/Analytics";
 import PaymentHistory from "../pages/OrganizerDashboardLayout/PaymentHistory";
 import ManageRegisteredCamps from "../pages/OrganizerDashboardLayout/ManageRegisteredCamps";
+import OrganizerRoute from "./OrganizerRoute";
+import ParticipantRoute from "./ParticipantRoute";
 
 export const router = createBrowserRouter([
   {
@@ -27,13 +29,13 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <OrganizerProfile /> },
           { path: "profile", element: <OrganizerProfile /> },
-          { path: "analytics", element: <Analytics /> },
+          { path: "analytics", element: <ParticipantRoute><Analytics /></ParticipantRoute> },
           
-          { path: "add-camp", element: <AddCamp /> },
-          { path: "manage-camps", element: <ManageCamps /> },
-          { path: "registered-camps", element: <RegisteredCamps /> },
-          { path: "manage-registered-camps", element: <ManageRegisteredCamps /> },
-          { path: "payment-history", element: <PaymentHistory /> },
+          { path: "add-camp", element: <OrganizerRoute><AddCamp /></OrganizerRoute> },
+          { path: "manage-camps", element: <OrganizerRoute><ManageCamps /></OrganizerRoute> },
+          { path: "registered-camps", element: <ParticipantRoute><RegisteredCamps /> </ParticipantRoute>},
+          { path: "manage-registered-camps", element: <OrganizerRoute><ManageRegisteredCamps /></OrganizerRoute> },
+          { path: "payment-history", element: <ParticipantRoute><PaymentHistory /></ParticipantRoute>},
         ],
       },
     ],
