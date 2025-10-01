@@ -42,7 +42,7 @@ const CampDetails = () => {
         campName: camp.name,
         campFees: camp.fees,
         location: camp.location,
-        professional: camp.professional,
+         healthcareProfessional: camp.professional,
         participantName: user.displayName || user.name,
         participantEmail: user.email,
         ...formData,
