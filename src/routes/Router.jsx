@@ -12,6 +12,7 @@ import ManageCamps from "../pages/OrganizerDashboardLayout/ManageCamps";
 import RegisteredCamps from "../pages/OrganizerDashboardLayout/RegisteredCamps";
 import PrivateOrganizerRoute from "./PrivateOrganizerRoute";
 
+
 export const router = createBrowserRouter([
   {
     path: "/",
