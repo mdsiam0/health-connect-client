@@ -30,3 +30,5 @@ If you are developing a production application, we recommend using TypeScript wi
 - npm install axios
 - npm install sweetalert2
 - npm install lucide-react
+- npm install --save @stripe/react-stripe-js @stripe/stripe-js
+- npm install stripe
