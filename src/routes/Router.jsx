@@ -10,49 +10,38 @@ import OrganizerProfile from "../pages/OrganizerDashboardLayout/OrganizerProfile
 import AddCamp from "../pages/OrganizerDashboardLayout/AddCamp";
 import ManageCamps from "../pages/OrganizerDashboardLayout/ManageCamps";
 import RegisteredCamps from "../pages/OrganizerDashboardLayout/RegisteredCamps";
-
+import PrivateOrganizerRoute from "./PrivateOrganizerRoute";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        Component: RootLayout,
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "available-camps", element: <AvailableCamps /> },
+      {
+        path: "/dashboard",
+        element: (
+          <PrivateOrganizerRoute>
+            <OrganizerDashboardLayout />
+          </PrivateOrganizerRoute>
+        ),
         children: [
-            {
-                index: true,
-                Component: Home,
-            },
-            {
-                path: 'available-camps',
-                Component: AvailableCamps,
-            },
-            {
-                path: "/dashboard",
-                Component: OrganizerDashboardLayout,
-                children: [
-                    {
-                        index: true, 
-                        Component: OrganizerProfile, 
-                    },
-                    { path: "profile", Component: OrganizerProfile },
-                    { path: "add-camp", Component: AddCamp },
-                    { path: "manage-camps", Component: ManageCamps },
-                    { path: "registered-camps", Component: RegisteredCamps },
-                ],
-            },
-        ]
-    },
-    {
-        path: '/',
-        Component: AuthLayout,
-        children: [
-            {
-                path: 'login',
-                Component: Login,
-            },
-            {
-                path: 'register',
-                Component: Register,
-            }
-        ]
-    },
+          { index: true, element: <OrganizerProfile /> },
+          { path: "profile", element: <OrganizerProfile /> },
+          { path: "add-camp", element: <AddCamp /> },
+          { path: "manage-camps", element: <ManageCamps /> },
+          { path: "registered-camps", element: <RegisteredCamps /> },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <AuthLayout />,
+    children: [
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+    ],
+  },
 ]);
