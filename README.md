@@ -28,4 +28,5 @@ If you are developing a production application, we recommend using TypeScript wi
 - npm install react-hot-toast
 - npm install @tanstack/react-query
 - npm install axios
--npm install sweetalert2
+- npm install sweetalert2
+- npm install lucide-react
