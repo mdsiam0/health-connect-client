@@ -9,8 +9,11 @@ import CheckoutForm from "../../components/CheckoutForm";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
+// Fetch participant registrations
 const fetchRegistrations = async (email) => {
-  const res = await axios.get(`https://mcms-server-three.vercel.app/registrations/participant/${email}`);
+  const res = await axios.get(
+    `https://mcms-server-three.vercel.app/registrations/participant/${email}`
+  );
   return res.data;
 };
 
@@ -26,9 +29,10 @@ const RegisteredCamps = () => {
     enabled: !!user?.email,
   });
 
+  // Handle successful payment
   const handlePaymentSuccess = async (campId, transactionId, camp) => {
     try {
-      
+      // Save payment info
       await axios.post("https://mcms-server-three.vercel.app/payments", {
         transactionId,
         participantEmail: camp.participantEmail,
@@ -39,13 +43,20 @@ const RegisteredCamps = () => {
         date: new Date(),
       });
 
-      
-      await axios.patch(`https://mcms-server-three.vercel.app/registrations/${camp._id}`, {
-        paymentStatus: "Paid",
-        transactionId,
-      });
+      // Update registration status
+      await axios.patch(
+        `https://mcms-server-three.vercel.app/registrations/${camp._id}`,
+        {
+          paymentStatus: "Paid",
+          transactionId,
+        }
+      );
 
-      Swal.fire("Success!", `Payment successful! Transaction ID: ${transactionId}`, "success");
+      Swal.fire(
+        "Success!",
+        `Payment successful! Transaction ID: ${transactionId}`,
+        "success"
+      );
       setSelectedCamp(null);
       refetch();
     } catch (err) {
@@ -54,6 +65,7 @@ const RegisteredCamps = () => {
     }
   };
 
+  // Cancel registration
   const handleCancel = async (registrationId, paymentStatus) => {
     if (paymentStatus === "Paid") return; // Cannot cancel paid registrations
 
@@ -68,7 +80,9 @@ const RegisteredCamps = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axios.delete(`https://mcms-server-three.vercel.app/registrations/${registrationId}`);
+        await axios.delete(
+          `https://mcms-server-three.vercel.app/registrations/${registrationId}`
+        );
         Swal.fire("Cancelled!", "Your registration has been cancelled.", "success");
         refetch();
       } catch (err) {
@@ -77,24 +91,28 @@ const RegisteredCamps = () => {
     }
   };
 
+  // Open feedback modal
   const openFeedbackModal = (camp) => {
     setFeedbackCamp(camp);
     setFeedbackText("");
   };
 
+  // Submit feedback
+  // Submit feedback
   const submitFeedback = async () => {
     if (!feedbackText.trim()) {
       Swal.fire("Error", "Feedback cannot be empty.", "error");
       return;
     }
     try {
-      await axios.post("https://mcms-server-three.vercel.app/feedbacks", {
+      await axios.post("https://mcms-server-three.vercel.app/feedback", {
         campId: feedbackCamp.campId,
         participantEmail: feedbackCamp.participantEmail,
         participantName: feedbackCamp.participantName,
         feedback: feedbackText,
         date: new Date(),
       });
+
       Swal.fire("Thank you!", "Your feedback has been submitted.", "success");
       setFeedbackCamp(null);
       setFeedbackText("");
@@ -102,6 +120,8 @@ const RegisteredCamps = () => {
       Swal.fire("Error", "Failed to submit feedback.", "error");
     }
   };
+
+
 
   if (isLoading) return <p>Loading your registrations...</p>;
   if (error) return <p className="text-red-500">Error fetching registrations.</p>;
@@ -131,11 +151,10 @@ const RegisteredCamps = () => {
                 <td className="px-4 py-2">{reg.participantName}</td>
                 <td className="px-4 py-2">
                   <span
-                    className={`px-2 py-1 rounded ${
-                      reg.paymentStatus === "Paid"
+                    className={`px-2 py-1 rounded ${reg.paymentStatus === "Paid"
                         ? "bg-green-200 text-green-800"
                         : "bg-red-200 text-red-800"
-                    }`}
+                      }`}
                   >
                     {reg.paymentStatus || "Unpaid"}
                   </span>

@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md mx-auto mt-10">
+    <div className="w-full max-w-md bg-base-200 p-8 rounded-lg shadow-md mx-auto mt-10">
       <h2 className="text-2xl font-bold text-center mb-6">Login to MCMS</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
@@ -42,6 +42,7 @@ const Login = () => {
 
         <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">Login</button>
       </form>
+      <div className="divider">OR</div>
 
       <SocialLogin />
 
