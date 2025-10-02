@@ -1,4 +1,3 @@
-// src/pages/participant/RegisteredCamps.jsx
 import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
@@ -29,7 +28,7 @@ const RegisteredCamps = () => {
 
   const handlePaymentSuccess = async (campId, transactionId, camp) => {
     try {
-      // Save payment history
+      
       await axios.post("http://localhost:5000/payments", {
         transactionId,
         participantEmail: camp.participantEmail,
@@ -40,7 +39,7 @@ const RegisteredCamps = () => {
         date: new Date(),
       });
 
-      // Update registration status
+      
       await axios.patch(`http://localhost:5000/registrations/${camp._id}`, {
         paymentStatus: "Paid",
         transactionId,
