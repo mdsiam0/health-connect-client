@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
 
 const fetchUserRole = async (email) => {
-  const res = await fetch(`http://localhost:5000/users/role/${email}`);
+  const res = await fetch(`https://mcms-server-three.vercel.app/users/role/${email}`);
   if (!res.ok) {
     throw new Error("Failed to fetch user role");
   }

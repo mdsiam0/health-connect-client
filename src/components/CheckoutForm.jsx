@@ -16,7 +16,7 @@ const CheckoutForm = ({ camp, onSuccess }) => {
 
     try {
       
-      const { data } = await axios.post("http://localhost:5000/create-payment-intent", {
+      const { data } = await axios.post("https://mcms-server-three.vercel.app/create-payment-intent", {
         amount: camp.campFees,
         participantEmail: camp.participantEmail,
         campId: camp._id,
@@ -38,7 +38,7 @@ const CheckoutForm = ({ camp, onSuccess }) => {
 
       if (paymentIntent.status === "succeeded") {
         
-        await axios.post("http://localhost:5000/payments", {
+        await axios.post("https://mcms-server-three.vercel.app/payments", {
           transactionId: paymentIntent.id,
           participantEmail: camp.participantEmail,
           campId: camp._id,
@@ -48,7 +48,7 @@ const CheckoutForm = ({ camp, onSuccess }) => {
         });
 
         
-        await axios.patch(`http://localhost:5000/registrations/${camp._id}`, {
+        await axios.patch(`https://mcms-server-three.vercel.app/registrations/${camp._id}`, {
           paymentStatus: "Paid",
           transactionId: paymentIntent.id,
         });

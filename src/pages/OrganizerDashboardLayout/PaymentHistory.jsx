@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetchPayments = async (email) => {
-  const res = await axios.get(`http://localhost:5000/payments/participant/${email}`);
+  const res = await axios.get(`https://mcms-server-three.vercel.app/payments/participant/${email}`);
   return res.data;
 };
 

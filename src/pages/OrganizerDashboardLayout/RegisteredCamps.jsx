@@ -10,7 +10,7 @@ import CheckoutForm from "../../components/CheckoutForm";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const fetchRegistrations = async (email) => {
-  const res = await axios.get(`http://localhost:5000/registrations/participant/${email}`);
+  const res = await axios.get(`https://mcms-server-three.vercel.app/registrations/participant/${email}`);
   return res.data;
 };
 
@@ -29,7 +29,7 @@ const RegisteredCamps = () => {
   const handlePaymentSuccess = async (campId, transactionId, camp) => {
     try {
       
-      await axios.post("http://localhost:5000/payments", {
+      await axios.post("https://mcms-server-three.vercel.app/payments", {
         transactionId,
         participantEmail: camp.participantEmail,
         participantName: camp.participantName,
@@ -40,7 +40,7 @@ const RegisteredCamps = () => {
       });
 
       
-      await axios.patch(`http://localhost:5000/registrations/${camp._id}`, {
+      await axios.patch(`https://mcms-server-three.vercel.app/registrations/${camp._id}`, {
         paymentStatus: "Paid",
         transactionId,
       });
@@ -68,7 +68,7 @@ const RegisteredCamps = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:5000/registrations/${registrationId}`);
+        await axios.delete(`https://mcms-server-three.vercel.app/registrations/${registrationId}`);
         Swal.fire("Cancelled!", "Your registration has been cancelled.", "success");
         refetch();
       } catch (err) {
@@ -88,7 +88,7 @@ const RegisteredCamps = () => {
       return;
     }
     try {
-      await axios.post("http://localhost:5000/feedbacks", {
+      await axios.post("https://mcms-server-three.vercel.app/feedbacks", {
         campId: feedbackCamp.campId,
         participantEmail: feedbackCamp.participantEmail,
         participantName: feedbackCamp.participantName,

@@ -14,7 +14,7 @@ import {
 } from "recharts";
 
 const fetchRegistrations = async (email) => {
-  const res = await axios.get(`http://localhost:5000/registrations/participant/${email}`);
+  const res = await axios.get(`https://mcms-server-three.vercel.app/registrations/participant/${email}`);
   return res.data;
 };
 

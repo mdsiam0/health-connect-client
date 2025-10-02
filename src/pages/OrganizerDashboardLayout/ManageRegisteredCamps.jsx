@@ -6,7 +6,7 @@ import axios from "axios";
 
 const ManageRegisteredCamps = () => {
     const axiosSecure = axios.create({
-        baseURL: "http://localhost:5000",
+        baseURL: "https://mcms-server-three.vercel.app",
     });
 
     const queryClient = useQueryClient();
