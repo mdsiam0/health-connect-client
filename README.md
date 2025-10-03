@@ -1,23 +1,24 @@
-HealthConnect: Medical Camp Management System (MCMS)
+## HealthConnect: Medical Camp Management System (MCMS)
 
 
 This project is a Medical Camp Management System (MCMS) developed using the MERN stack. It's designed to efficiently help organizers and participants manage and coordinate medical camps, featuring separate, secure dashboards for different user roles.
 
 <hr>
 
-🔗 Live Site Access
-Detail	        Value
-Website Name	HealthConnect
-Live Site URL	[(https://healthconnect-ph.netlify.app/)]
-Organizer Username	mdsiam5112@gmail.com
-Organizer Password	25252525
+## 🔗 Live Site Access
 
-Export to Sheets
+
+Website Name: HealthConnect
+Live Site URL: [(https://healthconnect-ph.netlify.app/)]
+Organizer Username: mdsiam5112@gmail.com
+Organizer Password:	25252525
+
+
 
 
 <hr>
 
-✨ Key Features
+## ✨ Key Features
 This platform is built with a focus on usability, security, and efficiency, encompassing the following core features:
 
 MERN Stack Foundation: Built on a robust and scalable architecture using MongoDB, Express, React, and Node.js.
@@ -46,7 +47,7 @@ Environment Variable Security: Sensitive credentials (Firebase config, MongoDB U
 
 <hr>
 
-💻 Technology Stack
+## 💻 Technology Stack
 Frontend: React, React Router DOM, TanStack Query, Tailwind, Daisy UI, Recharts, React Hook Form.
 
 Backend: Node.js, Express.js, MongoDB (Mongoose), JWT.
@@ -58,3 +59,25 @@ Authentication: Firebase Authentication (for social login/email-password), JWT (
 Payment: Stripe.
 
 Styling: Tailwind CSS.
+
+
+## npm packages
+
+- npm create vite@latest
+- npm install tailwindcss @tailwindcss/vite
+- npm i -D daisyui@latest
+- npm i react-router
+- npm install react-hook-form
+- npm install firebase
+- npm install react-icons
+- npm install react-responsive-carousel
+- npm install react-hot-toast
+- npm install @tanstack/react-query
+- npm install axios
+- npm install sweetalert2
+- npm install lucide-react
+- npm install --save @stripe/react-stripe-js @stripe/stripe-js
+- npm install stripe
+- npm install recharts
+- npm install react-countup
+- npm install motion
