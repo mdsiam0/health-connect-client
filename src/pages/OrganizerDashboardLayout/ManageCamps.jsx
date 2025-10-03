@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
+import Pagination from "../../components/Pagination";
 
 const fetchOrganizerCamps = async (organizerEmail) => {
   const res = await axios.get(
@@ -16,13 +17,23 @@ const ManageCamps = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
+  // ✅ Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;
+
   const { data: camps = [], isLoading } = useQuery({
     queryKey: ["organizer-camps", user?.email],
     queryFn: () => fetchOrganizerCamps(user?.email || ""),
     enabled: !!user?.email,
   });
 
- 
+  // ✅ Compute paginated camps
+  const totalPages = Math.ceil(camps.length / rowsPerPage);
+  const paginatedCamps = useMemo(() => {
+    const start = (currentPage - 1) * rowsPerPage;
+    return camps.slice(start, start + rowsPerPage);
+  }, [currentPage, camps]);
+
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -47,7 +58,6 @@ const ManageCamps = () => {
       }
     }
   };
-
 
   const handleEdit = async (camp) => {
     const { value: formValues } = await Swal.fire({
@@ -99,36 +109,45 @@ const ManageCamps = () => {
       {camps.length === 0 ? (
         <p className="text-gray-600">No camps created yet. Add one from Add Camp.</p>
       ) : (
-        <table className="table w-full min-w-[600px]">
-          <thead>
-            <tr className="bg-gray-100">
-              <th>Camp</th>
-              <th>Date & Time</th>
-              <th>Location</th>
-              <th>Professional</th>
-              <th>Participants</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {camps.map((c) => (
-              <tr key={c._id} className="hover:bg-gray-50">
-                <td>
-                  <div className="font-medium">{c.name}</div>
-                  <div className="text-sm opacity-70">{c.fees ? `$${c.fees}` : "Free"}</div>
-                </td>
-                <td>{c.date ? new Date(c.date).toLocaleString() : "TBD"}</td>
-                <td>{c.location}</td>
-                <td>{c.professional}</td>
-                <td>{c.participants || 0}</td>
-                <td className="flex flex-wrap gap-2">
-                  <button onClick={() => handleEdit(c)} className="btn btn-sm btn-outline">Edit</button>
-                  <button onClick={() => handleDelete(c._id)} className="btn btn-sm btn-error">Delete</button>
-                </td>
+        <>
+          <table className="table w-full min-w-[600px]">
+            <thead>
+              <tr className="bg-gray-100">
+                <th>Camp</th>
+                <th>Date & Time</th>
+                <th>Location</th>
+                <th>Professional</th>
+                <th>Participants</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {paginatedCamps.map((c) => (
+                <tr key={c._id} className="hover:bg-gray-50">
+                  <td>
+                    <div className="font-medium">{c.name}</div>
+                    <div className="text-sm opacity-70">{c.fees ? `$${c.fees}` : "Free"}</div>
+                  </td>
+                  <td>{c.date ? new Date(c.date).toLocaleString() : "TBD"}</td>
+                  <td>{c.location}</td>
+                  <td>{c.professional}</td>
+                  <td>{c.participants || 0}</td>
+                  <td className="flex flex-wrap gap-2">
+                    <button onClick={() => handleEdit(c)} className="btn btn-sm btn-outline">Edit</button>
+                    <button onClick={() => handleDelete(c._id)} className="btn btn-sm btn-error">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* ✅ Pagination Footer */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </>
       )}
     </div>
   );

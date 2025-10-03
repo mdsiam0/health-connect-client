@@ -1,21 +1,34 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Pagination from "../../components/Pagination";
+
 
 const fetchPayments = async (email) => {
-  const res = await axios.get(`https://mcms-server-three.vercel.app/payments/participant/${email}`);
+  const res = await axios.get(
+    `https://mcms-server-three.vercel.app/payments/participant/${email}`
+  );
   return res.data;
 };
 
 const PaymentHistory = () => {
   const { user } = useAuth();
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;
 
   const { data: payments = [], isLoading, error } = useQuery({
     queryKey: ["payments", user?.email],
     queryFn: () => fetchPayments(user.email),
     enabled: !!user?.email,
   });
+
+  const totalPages = Math.ceil(payments.length / rowsPerPage);
+
+  const paginatedPayments = useMemo(() => {
+    const start = (currentPage - 1) * rowsPerPage;
+    return payments.slice(start, start + rowsPerPage);
+  }, [currentPage, payments]);
 
   if (isLoading) return <p>Loading payment history...</p>;
   if (error) return <p className="text-red-500">Error fetching payment history.</p>;
@@ -36,8 +49,8 @@ const PaymentHistory = () => {
             </tr>
           </thead>
           <tbody>
-            {payments.length > 0 ? (
-              payments.map((payment) => (
+            {paginatedPayments.length > 0 ? (
+              paginatedPayments.map((payment) => (
                 <tr key={payment._id} className="hover:bg-gray-50">
                   <td className="px-4 py-2 font-medium">{payment.campName}</td>
                   <td className="px-4 py-2">${payment.amount}</td>
@@ -79,6 +92,13 @@ const PaymentHistory = () => {
           </tbody>
         </table>
       </div>
+
+      {/* ✅ Reusable Pagination */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
     </div>
   );
 };

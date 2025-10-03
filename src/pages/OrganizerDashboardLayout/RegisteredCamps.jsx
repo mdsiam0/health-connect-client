@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -6,6 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Swal from "sweetalert2";
 import CheckoutForm from "../../components/CheckoutForm";
+import Pagination from "../../components/Pagination";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -23,11 +24,24 @@ const RegisteredCamps = () => {
   const [feedbackCamp, setFeedbackCamp] = useState(null);
   const [feedbackText, setFeedbackText] = useState("");
 
+  // ✅ Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;
+
   const { data: registrations = [], isLoading, error, refetch } = useQuery({
     queryKey: ["registrations", user?.email],
     queryFn: () => fetchRegistrations(user.email),
     enabled: !!user?.email,
   });
+
+  // ✅ total pages
+  const totalPages = Math.ceil(registrations.length / rowsPerPage);
+
+  // ✅ Slice data for pagination
+  const paginatedRegistrations = useMemo(() => {
+    const start = (currentPage - 1) * rowsPerPage;
+    return registrations.slice(start, start + rowsPerPage);
+  }, [currentPage, registrations]);
 
   // Handle successful payment
   const handlePaymentSuccess = async (campId, transactionId, camp) => {
@@ -98,7 +112,6 @@ const RegisteredCamps = () => {
   };
 
   // Submit feedback
-  // Submit feedback
   const submitFeedback = async () => {
     if (!feedbackText.trim()) {
       Swal.fire("Error", "Feedback cannot be empty.", "error");
@@ -121,8 +134,6 @@ const RegisteredCamps = () => {
     }
   };
 
-
-
   if (isLoading) return <p>Loading your registrations...</p>;
   if (error) return <p className="text-red-500">Error fetching registrations.</p>;
 
@@ -144,17 +155,18 @@ const RegisteredCamps = () => {
             </tr>
           </thead>
           <tbody>
-            {registrations.map((reg) => (
+            {paginatedRegistrations.map((reg) => (
               <tr key={reg._id} className="hover:bg-gray-50">
                 <td className="px-4 py-2">{reg.campName}</td>
                 <td className="px-4 py-2">${reg.campFees}</td>
                 <td className="px-4 py-2">{reg.participantName}</td>
                 <td className="px-4 py-2">
                   <span
-                    className={`px-2 py-1 rounded ${reg.paymentStatus === "Paid"
+                    className={`px-2 py-1 rounded ${
+                      reg.paymentStatus === "Paid"
                         ? "bg-green-200 text-green-800"
                         : "bg-red-200 text-red-800"
-                      }`}
+                    }`}
                   >
                     {reg.paymentStatus || "Unpaid"}
                   </span>
@@ -207,6 +219,13 @@ const RegisteredCamps = () => {
           </tbody>
         </table>
       </div>
+
+      {/* ✅ Pagination Component */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
 
       {/* Stripe Payment Modal */}
       {selectedCamp && (
