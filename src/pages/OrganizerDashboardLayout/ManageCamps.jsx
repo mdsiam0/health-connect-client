@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import Pagination from "../../components/Pagination";
-
+import SearchBar from "../../components/SearchBar";
 const fetchOrganizerCamps = async (organizerEmail) => {
   const res = await axios.get(
     `${import.meta.env.VITE_API_URL}/organizer-camps/${encodeURIComponent(organizerEmail)}`
@@ -17,8 +17,8 @@ const ManageCamps = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const rowsPerPage = 10;
 
   const { data: camps = [], isLoading } = useQuery({
@@ -27,12 +27,28 @@ const ManageCamps = () => {
     enabled: !!user?.email,
   });
 
+  // Filter camps based on search query
+  const filteredCamps = useMemo(() => {
+    return camps.filter((c) => {
+      const query = searchQuery.toLowerCase();
+      return (
+        c.name?.toLowerCase().includes(query) ||
+        c.professional?.toLowerCase().includes(query) ||
+        (c.date && new Date(c.date).toLocaleDateString().includes(query))
+      );
+    });
+  }, [searchQuery, camps]);
+
  
-  const totalPages = Math.ceil(camps.length / rowsPerPage);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  const totalPages = Math.ceil(filteredCamps.length / rowsPerPage);
   const paginatedCamps = useMemo(() => {
     const start = (currentPage - 1) * rowsPerPage;
-    return camps.slice(start, start + rowsPerPage);
-  }, [currentPage, camps]);
+    return filteredCamps.slice(start, start + rowsPerPage);
+  }, [currentPage, filteredCamps]);
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
@@ -106,10 +122,19 @@ const ManageCamps = () => {
   return (
     <div className="bg-white p-4 rounded shadow overflow-x-auto">
       <h3 className="text-xl mb-4 font-semibold">Manage Camps</h3>
+
       {camps.length === 0 ? (
         <p className="text-gray-600">No camps created yet. Add one from Add Camp.</p>
       ) : (
         <>
+          {/* Search Bar */}
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            placeholder="Search by Camp Name, Date or Healthcare Professional..."
+          />
+
+          {/* Table */}
           <table className="table w-full min-w-[600px]">
             <thead>
               <tr className="bg-gray-100">
@@ -141,7 +166,7 @@ const ManageCamps = () => {
             </tbody>
           </table>
 
-          
+          {/* Pagination */}
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

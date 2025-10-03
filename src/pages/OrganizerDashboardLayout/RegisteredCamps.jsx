@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -7,7 +7,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import Swal from "sweetalert2";
 import CheckoutForm from "../../components/CheckoutForm";
 import Pagination from "../../components/Pagination";
-
+import SearchBar from "../../components/SearchBar";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 // Fetch participant registrations
@@ -24,8 +24,9 @@ const RegisteredCamps = () => {
   const [feedbackCamp, setFeedbackCamp] = useState(null);
   const [feedbackText, setFeedbackText] = useState("");
 
-  // ✅ Pagination state
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(""); 
   const rowsPerPage = 10;
 
   const { data: registrations = [], isLoading, error, refetch } = useQuery({
@@ -34,19 +35,28 @@ const RegisteredCamps = () => {
     enabled: !!user?.email,
   });
 
-  // ✅ total pages
-  const totalPages = Math.ceil(registrations.length / rowsPerPage);
+  
+  const filteredRegistrations = useMemo(() => {
+    return registrations.filter((reg) =>
+      reg.campName?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery, registrations]);
 
-  // ✅ Slice data for pagination
+  
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredRegistrations.length / rowsPerPage);
   const paginatedRegistrations = useMemo(() => {
     const start = (currentPage - 1) * rowsPerPage;
-    return registrations.slice(start, start + rowsPerPage);
-  }, [currentPage, registrations]);
+    return filteredRegistrations.slice(start, start + rowsPerPage);
+  }, [currentPage, filteredRegistrations]);
 
   // Handle successful payment
   const handlePaymentSuccess = async (campId, transactionId, camp) => {
     try {
-      // Save payment info
       await axios.post("https://mcms-server-three.vercel.app/payments", {
         transactionId,
         participantEmail: camp.participantEmail,
@@ -57,13 +67,9 @@ const RegisteredCamps = () => {
         date: new Date(),
       });
 
-      // Update registration status
       await axios.patch(
         `https://mcms-server-three.vercel.app/registrations/${camp._id}`,
-        {
-          paymentStatus: "Paid",
-          transactionId,
-        }
+        { paymentStatus: "Paid", transactionId }
       );
 
       Swal.fire(
@@ -79,9 +85,8 @@ const RegisteredCamps = () => {
     }
   };
 
-  // Cancel registration
   const handleCancel = async (registrationId, paymentStatus) => {
-    if (paymentStatus === "Paid") return; // Cannot cancel paid registrations
+    if (paymentStatus === "Paid") return;
 
     const confirm = await Swal.fire({
       title: "Are you sure?",
@@ -105,13 +110,11 @@ const RegisteredCamps = () => {
     }
   };
 
-  // Open feedback modal
   const openFeedbackModal = (camp) => {
     setFeedbackCamp(camp);
     setFeedbackText("");
   };
 
-  // Submit feedback
   const submitFeedback = async () => {
     if (!feedbackText.trim()) {
       Swal.fire("Error", "Feedback cannot be empty.", "error");
@@ -140,27 +143,35 @@ const RegisteredCamps = () => {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">My Registered Camps</h2>
-      <div className="overflow-x-auto">
+
+      {/* Search Bar */}
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        placeholder="Search by Camp Name..."
+      />
+
+      <div className="overflow-x-auto mt-2">
         <table className="table w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-2">Camp Name</th>
-              <th className="px-4 py-2">Camp Fees</th>
-              <th className="px-4 py-2">Participant Name</th>
-              <th className="px-4 py-2">Payment Status</th>
-              <th className="px-4 py-2">Confirmation Status</th>
-              <th className="px-4 py-2">Pay</th>
-              <th className="px-4 py-2">Feedback</th>
-              <th className="px-4 py-2">Cancel</th>
+              <th>Camp Name</th>
+              <th>Camp Fees</th>
+              <th>Participant Name</th>
+              <th>Payment Status</th>
+              <th>Confirmation Status</th>
+              <th>Pay</th>
+              <th>Feedback</th>
+              <th>Cancel</th>
             </tr>
           </thead>
           <tbody>
             {paginatedRegistrations.map((reg) => (
               <tr key={reg._id} className="hover:bg-gray-50">
-                <td className="px-4 py-2">{reg.campName}</td>
-                <td className="px-4 py-2">${reg.campFees}</td>
-                <td className="px-4 py-2">{reg.participantName}</td>
-                <td className="px-4 py-2">
+                <td>{reg.campName}</td>
+                <td>${reg.campFees}</td>
+                <td>{reg.participantName}</td>
+                <td>
                   <span
                     className={`px-2 py-1 rounded ${
                       reg.paymentStatus === "Paid"
@@ -171,8 +182,8 @@ const RegisteredCamps = () => {
                     {reg.paymentStatus || "Unpaid"}
                   </span>
                 </td>
-                <td className="px-4 py-2">{reg.confirmationStatus || "Pending"}</td>
-                <td className="px-4 py-2">
+                <td>{reg.confirmationStatus || "Pending"}</td>
+                <td>
                   {reg.paymentStatus === "Paid" ? (
                     <button className="btn btn-success btn-sm" disabled>
                       Paid
@@ -186,7 +197,7 @@ const RegisteredCamps = () => {
                     </button>
                   )}
                 </td>
-                <td className="px-4 py-2">
+                <td>
                   {reg.paymentStatus === "Paid" ? (
                     <button
                       onClick={() => openFeedbackModal(reg)}
@@ -198,7 +209,7 @@ const RegisteredCamps = () => {
                     <span className="text-gray-400">N/A</span>
                   )}
                 </td>
-                <td className="px-4 py-2">
+                <td>
                   <button
                     onClick={() => handleCancel(reg._id, reg.paymentStatus)}
                     className="btn btn-error btn-sm"
@@ -209,7 +220,7 @@ const RegisteredCamps = () => {
                 </td>
               </tr>
             ))}
-            {registrations.length === 0 && (
+            {filteredRegistrations.length === 0 && (
               <tr>
                 <td colSpan="8" className="text-center py-4 text-gray-500">
                   No registrations found.
@@ -220,7 +231,7 @@ const RegisteredCamps = () => {
         </table>
       </div>
 
-      {/* ✅ Pagination Component */}
+      {/* Pagination */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

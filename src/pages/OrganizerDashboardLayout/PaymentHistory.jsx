@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Pagination from "../../components/Pagination";
-
+import SearchBar from "../../components/SearchBar"; 
 
 const fetchPayments = async (email) => {
   const res = await axios.get(
@@ -15,6 +15,7 @@ const fetchPayments = async (email) => {
 const PaymentHistory = () => {
   const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(""); 
   const rowsPerPage = 10;
 
   const { data: payments = [], isLoading, error } = useQuery({
@@ -23,12 +24,23 @@ const PaymentHistory = () => {
     enabled: !!user?.email,
   });
 
-  const totalPages = Math.ceil(payments.length / rowsPerPage);
+  const filteredPayments = useMemo(() => {
+    return payments.filter((payment) =>
+      payment.campName?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery, payments]);
 
+ 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  
+  const totalPages = Math.ceil(filteredPayments.length / rowsPerPage);
   const paginatedPayments = useMemo(() => {
     const start = (currentPage - 1) * rowsPerPage;
-    return payments.slice(start, start + rowsPerPage);
-  }, [currentPage, payments]);
+    return filteredPayments.slice(start, start + rowsPerPage);
+  }, [currentPage, filteredPayments]);
 
   if (isLoading) return <p>Loading payment history...</p>;
   if (error) return <p className="text-red-500">Error fetching payment history.</p>;
@@ -36,7 +48,15 @@ const PaymentHistory = () => {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Payment History</h2>
-      <div className="overflow-x-auto">
+
+      {/* Search Bar */}
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        placeholder="Search by Camp Name..."
+      />
+
+      <div className="overflow-x-auto mt-2">
         <table className="table w-full border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
@@ -93,7 +113,6 @@ const PaymentHistory = () => {
         </table>
       </div>
 
-      
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

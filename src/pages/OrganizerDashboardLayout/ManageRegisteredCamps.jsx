@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Pagination from "../../components/Pagination";
+import SearchBar from "../../components/SearchBar";
 
 const ManageRegisteredCamps = () => {
   const axiosSecure = axios.create({
@@ -11,8 +12,9 @@ const ManageRegisteredCamps = () => {
 
   const queryClient = useQueryClient();
 
-  // ✅ Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const rowsPerPage = 10;
 
   const { data: registrations = [], isLoading } = useQuery({
@@ -23,12 +25,28 @@ const ManageRegisteredCamps = () => {
     },
   });
 
-  const totalPages = Math.ceil(registrations.length / rowsPerPage);
+  
+  const filteredRegistrations = useMemo(() => {
+    return registrations.filter((reg) => {
+      const query = searchQuery.toLowerCase();
+      return (
+        reg.campName?.toLowerCase().includes(query) ||
+        reg.participantName?.toLowerCase().includes(query)
+      );
+    });
+  }, [searchQuery, registrations]);
+
+  
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  const totalPages = Math.ceil(filteredRegistrations.length / rowsPerPage);
 
   const paginatedRegistrations = useMemo(() => {
     const start = (currentPage - 1) * rowsPerPage;
-    return registrations.slice(start, start + rowsPerPage);
-  }, [currentPage, registrations]);
+    return filteredRegistrations.slice(start, start + rowsPerPage);
+  }, [currentPage, filteredRegistrations]);
 
   const confirmMutation = useMutation({
     mutationFn: async (id) =>
@@ -49,9 +67,7 @@ const ManageRegisteredCamps = () => {
     },
   });
 
-  const handleConfirm = (id) => {
-    confirmMutation.mutate(id);
-  };
+  const handleConfirm = (id) => confirmMutation.mutate(id);
 
   const handleCancel = (id, paymentStatus, confirmationStatus) => {
     if (paymentStatus === "Paid" && confirmationStatus === "Confirmed") {
@@ -68,9 +84,7 @@ const ManageRegisteredCamps = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, cancel it!",
     }).then((result) => {
-      if (result.isConfirmed) {
-        cancelMutation.mutate(id);
-      }
+      if (result.isConfirmed) cancelMutation.mutate(id);
     });
   };
 
@@ -79,6 +93,13 @@ const ManageRegisteredCamps = () => {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-6">Manage Registered Camps</h2>
+
+      
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        placeholder="Search by Camp Name or Participant..."
+      />
 
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full border border-gray-300">
@@ -144,7 +165,7 @@ const ManageRegisteredCamps = () => {
         </table>
       </div>
 
-      {/* ✅ Pagination Footer */}
+      
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
