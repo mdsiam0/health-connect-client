@@ -8,10 +8,10 @@ This project is a Medical Camp Management System (MCMS) developed using the MERN
 ## 🔗 Live Site Access
 
 
-Website Name: HealthConnect
-Live Site URL: [(https://healthconnect-ph.netlify.app/)]
-Organizer Username: mdsiam5112@gmail.com
-Organizer Password:	25252525
+- Website Name: HealthConnect
+- Live Site URL: [(https://healthconnect-ph.netlify.app/)]
+- Organizer Username: mdsiam5112@gmail.com
+- Organizer Password:	25252525
 
 
 
