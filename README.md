@@ -34,3 +34,4 @@ If you are developing a production application, we recommend using TypeScript wi
 - npm install stripe
 - npm install recharts
 - npm install react-countup
+- npm install motion

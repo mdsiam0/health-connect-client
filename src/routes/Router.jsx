@@ -16,6 +16,7 @@ import ManageRegisteredCamps from "../pages/OrganizerDashboardLayout/ManageRegis
 import OrganizerRoute from "./OrganizerRoute";
 import ParticipantRoute from "./ParticipantRoute";
 import CampDetails from "../components/CampDetails";
+import NotFound from "../components/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -90,5 +91,9 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
     ],
+  },
+  {
+    path: "*", 
+    element: <NotFound></NotFound>
   },
 ]);
