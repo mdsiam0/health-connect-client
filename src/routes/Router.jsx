@@ -17,6 +17,7 @@ import OrganizerRoute from "./OrganizerRoute";
 import ParticipantRoute from "./ParticipantRoute";
 import CampDetails from "../components/CampDetails";
 import NotFound from "../components/NotFound";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -25,10 +26,10 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "available-camps", element: <AvailableCamps /> },
-      { path: "camp-details/:campId", element: <CampDetails /> },
+      { path: "camp-details/:campId", element: <PrivateRoute><CampDetails /></PrivateRoute> },
       {
         path: "dashboard",
-        element: <OrganizerDashboardLayout />,
+        element: <PrivateRoute><OrganizerDashboardLayout /></PrivateRoute>,
         children: [
           { index: true, element: <OrganizerProfile /> },
           { path: "profile", element: <OrganizerProfile /> },
