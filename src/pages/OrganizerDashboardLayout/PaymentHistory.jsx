@@ -93,7 +93,7 @@ const PaymentHistory = () => {
         </table>
       </div>
 
-      {/* ✅ Reusable Pagination */}
+      
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

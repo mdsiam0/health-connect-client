@@ -17,7 +17,7 @@ const ManageCamps = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  // ✅ Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 
@@ -27,7 +27,7 @@ const ManageCamps = () => {
     enabled: !!user?.email,
   });
 
-  // ✅ Compute paginated camps
+ 
   const totalPages = Math.ceil(camps.length / rowsPerPage);
   const paginatedCamps = useMemo(() => {
     const start = (currentPage - 1) * rowsPerPage;
@@ -141,7 +141,7 @@ const ManageCamps = () => {
             </tbody>
           </table>
 
-          {/* ✅ Pagination Footer */}
+          
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
