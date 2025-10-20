@@ -27,7 +27,7 @@ const PopularCamps = () => {
   if (isError) return <p className="text-center py-10 text-red-500">Failed to load camps.</p>;
 
   return (
-    <section className="max-w-6xl mx-auto py-10 px-4">
+    <section className="max-w-[1500px] mx-auto mt-20 px-4">
       <h2 className="text-3xl font-bold text-center mb-8">Popular Camps</h2>
 
       {camps.length === 0 ? (

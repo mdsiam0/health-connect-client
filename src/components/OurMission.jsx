@@ -54,7 +54,7 @@ const StatisticCard = ({ stat }) => {
 
 const OurMission = () => {
   return (
-    <section id="impact-stats" className="mb-16">
+    <section id="impact-stats" className="mb-16 ">
       <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-4">
         Our Mission in Action
       </h2>
@@ -63,7 +63,7 @@ const OurMission = () => {
         dedicated medical camps.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-[1500px] px-4 mx-auto">
         {stats.map((stat, index) => (
           <StatisticCard key={index} stat={stat} />
         ))}

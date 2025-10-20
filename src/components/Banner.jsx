@@ -7,7 +7,7 @@ import BannerImage3 from "../assets/banner3.jpg";
 
 const Banner = () => {
   return (
-    <section className="relative max-w-[1500px] mx-auto mt-20 rounded-3xl">
+    <section className="relative max-w-[1500px] mx-auto mt-20 px-4 rounded-3xl">
       <Carousel
         autoPlay
         infiniteLoop
