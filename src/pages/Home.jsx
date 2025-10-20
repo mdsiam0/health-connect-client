@@ -6,6 +6,7 @@ import OurMission from '../components/OurMission';
 import ContactSection from '../components/ContactSection';
 import AboutSection from '../components/AboutSection';
 import BlogPreviewSection from '../components/BlogPreviewSection';
+import SponsorsSection from '../components/SponsorsSection';
 
 
 
@@ -21,6 +22,7 @@ const Home = () => {
             <OurMission></OurMission>
              <FeedbackSection></FeedbackSection>
              <BlogPreviewSection></BlogPreviewSection>
+             <SponsorsSection></SponsorsSection>
             <ContactSection></ContactSection>
         </div>
     );
