@@ -21,7 +21,7 @@ const ContactSection = () => {
           <div className="space-y-2 ">
             <p className="flex items-center gap-2">
               <MdEmail className="text-primary" />
-              support@mcms-health.org
+              support@healthconnect.org
             </p>
             <p className="flex items-center gap-2">
               <FaSquarePhone className="text-primary" />

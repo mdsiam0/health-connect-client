@@ -4,6 +4,8 @@ import PopularCamps from '../components/PopularCamps';
 import FeedbackSection from '../components/FeedbackSection';
 import OurMission from '../components/OurMission';
 import ContactSection from '../components/ContactSection';
+import AboutSection from '../components/AboutSection';
+import BlogPreviewSection from '../components/BlogPreviewSection';
 
 
 
@@ -11,10 +13,14 @@ const Home = () => {
     return (
         <div>
             <Banner></Banner>
+            
             <PopularCamps></PopularCamps>
-            <FeedbackSection></FeedbackSection>
+            <AboutSection></AboutSection>
+           
             
             <OurMission></OurMission>
+             <FeedbackSection></FeedbackSection>
+             <BlogPreviewSection></BlogPreviewSection>
             <ContactSection></ContactSection>
         </div>
     );
