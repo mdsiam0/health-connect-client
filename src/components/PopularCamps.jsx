@@ -27,15 +27,15 @@ const PopularCamps = () => {
   if (isError) return <p className="text-center py-10 text-red-500">Failed to load camps.</p>;
 
   return (
-    <section className="max-w-[1500px] mx-auto mt-20 px-4">
-      <h2 className="text-3xl font-bold text-center mb-8">Popular Camps</h2>
+    <section className="max-w-[1500px] mx-auto mt-30 px-4">
+      <h2 className="text-3xl font-bold text-center mb-10">Popular Camps</h2>
 
       {camps.length === 0 ? (
         <p className="text-center text-gray-500">No camps available yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {camps.map((camp) => (
-            <div key={camp._id} className="bg-white shadow-md rounded-lg overflow-hidden">
+            <div key={camp._id} className="bg-base-200 shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
               <img
                 src={camp.image || "https://via.placeholder.com/400x200.png?text=Camp+Image"}
                 alt={camp.name}
@@ -59,7 +59,7 @@ const PopularCamps = () => {
         </div>
       )}
 
-      <div className="text-center mt-8">
+      <div className="text-center mt-10">
         <Link
           to="/available-camps"
           className=" btn btn-primary"

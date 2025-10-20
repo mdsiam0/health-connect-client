@@ -90,7 +90,7 @@ const CampDetails = () => {
   if (!camp) return null;
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="max-w-4xl mx-auto p-4 md:p-10 rounded-lg bg-base-200 my-10 md:my-25">
       <h1 className="text-3xl font-bold mb-2">{camp.name}</h1>
       <img src={camp.image} alt={camp.name} className="w-full h-120 object-cover mb-4" />
       <p><strong>Fees:</strong> ${camp.fees}</p>
@@ -102,7 +102,7 @@ const CampDetails = () => {
 
       <button
         onClick={() => setIsModalOpen(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        className="bg-blue-600 text-white w-full md:w-28 px-4 py-2 rounded hover:bg-blue-700"
       >
         Join Camp
       </button>

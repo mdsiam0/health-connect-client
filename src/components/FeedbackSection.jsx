@@ -20,17 +20,17 @@ const FeedbackSection = () => {
   if (error) return <p className="text-red-500">Error loading feedback.</p>;
 
   return (
-    <section className="py-12 bg-white">
+    <section className=" bg-white mt-30">
       <div className="max-w-[1500px] mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-10">
           Feedback & Ratings
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {feedbacks.length > 0 ? (
             feedbacks.map((fb) => (
               <div
                 key={fb._id}
-                className="bg-blue-100 p-6 rounded-lg shadow-md hover:shadow-lg transition"
+                className=" p-6 rounded-lg shadow-md hover:shadow-lg transition overflow-hidden bg-base-200 "
               >
                 <div className="flex items-center gap-4 mb-3">
                  

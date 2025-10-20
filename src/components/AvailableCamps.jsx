@@ -61,7 +61,7 @@ const AvailableCamps = () => {
   if (isError) return <p className="text-center py-10 text-red-500">Failed to load camps.</p>;
 
   return (
-    <section className="max-w-6xl mx-auto py-10 px-4">
+    <section className="max-w-[1500px] mx-auto py-10 px-4">
       <h2 className="text-3xl font-bold text-center mb-8">Available Camps</h2>
 
       {/* Controls: Search + Sort + Layout toggle */}
@@ -105,7 +105,7 @@ const AvailableCamps = () => {
           className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${gridCols} gap-6`}
         >
           {filteredAndSortedCamps.map((camp) => (
-            <div key={camp._id} className="bg-white shadow-md rounded-lg overflow-hidden">
+            <div key={camp._id} className="bg-base-200 shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
               <img
                 src={camp.image || "https://via.placeholder.com/400x200.png?text=Camp+Image"}
                 alt={camp.name}
