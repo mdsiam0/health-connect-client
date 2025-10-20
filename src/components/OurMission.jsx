@@ -54,7 +54,7 @@ const StatisticCard = ({ stat }) => {
 
 const OurMission = () => {
   return (
-    <section id="impact-stats" className="mb-16 ">
+    <section id="impact-stats" className="mb-30 mt-30">
       <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-4">
         Our Mission in Action
       </h2>
